@@ -11,8 +11,7 @@ def dock(base_url='http://localhost:3456'):
     url = base_url + '/v1/iot/device/dock'
     r = requests.post(url, json={'device_id': device_id}, stream=True)
     if r.status_code != 200:
-        print('Error:', r.status_code, r.json()['msg'])
-        return False
+        raise Exception('Error: ' + str(r.status_code) + ', ' + r.json()['msg'])
     for chunk in r.raw.read_chunked():
         data = json.loads(chunk.decode('utf-8'))
         if data['type'] == 'heartbeat':
